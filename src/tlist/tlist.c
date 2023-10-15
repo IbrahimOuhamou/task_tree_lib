@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "../tlist_t.c"
+#include "../../include/tlist.h"
 
 //check for NULL poiters
 
@@ -27,14 +27,14 @@ int8_t tlist_resize(struct tlist_t* tlist, uint32_t newsize)
 {
     if(NULL == tlist) return -1;
     //should check {newsize} with {tlist->size}
-    realloc(tlist->data, sizeof(struct  tlist_t*) * newsize);
+    tlist->data = realloc(tlist->data, sizeof(struct  tlist_t*) * newsize);
 }
 
 //frees the momory of the tasks list
 int8_t tlist_free(struct tlist_t* tlist)
 {
     if (NULL == tlist) return -1;
-    for(uint32_t i = 0; i < tlist_t->size; i++)
+    for(uint32_t i = 0; i < tlist->size; i++)
     {
 	if (NULL != tlist->data[i])
             free(tlist->data[i]);
@@ -55,14 +55,14 @@ int8_t tlist_add_task(struct tlist_t* tlist, struct task_t* task)
 {
     if (NULL == tlist) return -1;
     
-    tlist_resize(tlist->size + 1);
+    tlist_resize(tlist ,tlist->size + 1);
     
     if (NULL == task)
     {
-        task = malloc(sizeof(task_t));
+        task = malloc(sizeof(struct task_t));
     }
     
-    tlist[tlist->size - 1] = task;
+    tlist->data[tlist->size - 1] = task;
     
     task->id = tlist->size - 1;
     return 0;
