@@ -13,6 +13,7 @@ struct task_t* newtask(const char* tname)
     struct task_t* taskptr = (struct task_t*)malloc(sizeof(struct task_t));
     taskptr->progress = 0;
     memcpy(taskptr->name, tname, sizeof(taskptr->name));
+    taskptr->progress = 0;
 
     return taskptr;
 }
