@@ -22,12 +22,34 @@ int8_t tlist()
 /********************************** tlist_{data_manupilation} **************************************/
 /***************************************************************************************************/
 
+//inits tlist
+int8_t tlist_init(struct tlist_t* tlist)
+{
+    if(NULL == tlist){return -1;}
+
+    tlist->size = 0;
+    tlist->data = NULL;
+
+}
+
 //changes the size of {tlist} to hold {newsize} elements/tasks
 int8_t tlist_resize(struct tlist_t* tlist, uint32_t newsize)
 {
-    if(NULL == tlist) return -1;
+    if(NULL == tlist){return -1;}
+#ifdef TASKTREE_DEBUG
+    printf("tlist_resize()\n");
+#endif
+    
+    tlist->size = newsize;
+    
     //should check {newsize} with {tlist->size}
-    tlist->data = realloc(tlist->data, sizeof(struct  tlist_t*) * newsize);
+    if(NULL == tlist->data)
+    {
+        tlist->data = malloc(sizeof(void*) * newsize);
+        return 0;
+    }
+    tlist->data = realloc(tlist->data, sizeof(void*) * newsize);
+    return 0;
 }
 
 //frees the momory of the tasks list
@@ -53,20 +75,17 @@ int8_t tlist_free(struct tlist_t* tlist)
 //you can call tlist_add_task(tlist, newtask("BismiAllah tname"))
 int8_t tlist_add_task(struct tlist_t* tlist, struct task_t* task)
 {
-    if (NULL == tlist) return -1;
+    if (NULL == tlist) {return -1;}
     
     tlist_resize(tlist ,tlist->size + 1);
     
     if (NULL == task)
     {
-        task = malloc(sizeof(struct task_t));
+        task = newtask("Allah Akbar");
     }
     
-    tlist->data[tlist->size - 1] = task;
-    
+    tlist->data[tlist->size - 1] = task; 
     task->id = tlist->size - 1;
     return 0;
-
-    return -1;
 }
 

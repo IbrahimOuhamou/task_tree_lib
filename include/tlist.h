@@ -25,6 +25,9 @@ struct tlist_t
 /********************************** tlist_{data_manupilation} **************************************/
 /***************************************************************************************************/
 
+//inits tlist
+int8_t tlist_init(struct tlist_t* tlist);
+
 //changes the size of {tlist} to hold {newsize} elements/tasks
 int8_t tlist_resize(struct tlist_t* tlist, uint32_t newsize);
 
