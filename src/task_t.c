@@ -8,7 +8,7 @@
 
 #include "../include/task_t.h"
 
-struct task_t* newtask(const char* tname)
+struct task_t* tasknew(const char* tname)
 {
     struct task_t* taskptr = (struct task_t*)malloc(sizeof(struct task_t));
     taskptr->progress = 0;
@@ -18,3 +18,12 @@ struct task_t* newtask(const char* tname)
     return taskptr;
 }
 
+int8_t taskfree(struct task_t* task)
+{
+    if(NULL == task) {return 0;}
+
+    
+    //Incha2Allah this part should be the last thing
+    free(task);
+    return 0;
+}

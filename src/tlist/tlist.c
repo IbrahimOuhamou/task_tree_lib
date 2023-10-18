@@ -58,8 +58,8 @@ int8_t tlist_free(struct tlist_t* tlist)
     if (NULL == tlist) return -1;
     for(uint32_t i = 0; i < tlist->size; i++)
     {
-	if (NULL != tlist->data[i])
-            free(tlist->data[i]);
+        if (NULL != tlist->data[i])
+            taskfree(tlist->data[i]);
     }
     free(tlist->data);//free array
     tlist->size = 0;//resets size
@@ -72,16 +72,16 @@ int8_t tlist_free(struct tlist_t* tlist)
 //adds a task {task_t} to the task list {tlist_t}
 //if {task*} is a NULL pointer creates an empty task
 //
-//you can call tlist_add_task(tlist, newtask("BismiAllah tname"))
+//you can call tlist_add_task(tlist, tasknew("BismiAllah tname"))
 int8_t tlist_add_task(struct tlist_t* tlist, struct task_t* task)
 {
     if (NULL == tlist) {return -1;}
     
-    tlist_resize(tlist ,tlist->size + 1);
+    tlist_resize(tlist, tlist->size + 1);
     
     if (NULL == task)
     {
-        task = newtask("Allah Akbar");
+        task = tasknew("Allah Akbar");
     }
     
     tlist->data[tlist->size - 1] = task; 
