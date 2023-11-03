@@ -14,8 +14,7 @@ struct task_t
     //time_t or equivalent
 };
 
-struct task_t* tasknew(const char* tname);
-
-int8_t taskfree(struct task_t* task);
+struct task_t* task_tree_task_new(const char* tname);
+int8_t task_tree_task_free(struct task_t* task);
 
 #endif

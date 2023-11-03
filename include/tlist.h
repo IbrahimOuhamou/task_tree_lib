@@ -12,7 +12,7 @@
 struct tlist_t
 {
     uint32_t size;//size of array
-    
+
     //due to memory safety it might be changed to be {task_t*} rather than {task_t**}
     //will prefer safety over speed
 
@@ -21,28 +21,31 @@ struct tlist_t
     //(tlist.data[i] == NULL) = (tlist.data[i].name[0] == '\0')
 };
 
+                                            /*BismiAllah*/
+
 /***************************************************************************************************/
-/********************************** tlist_{data_manupilation} **************************************/
+/****************************************** tlist_task.. *******************************************/
 /***************************************************************************************************/
 
 //inits tlist
-int8_t tlist_init(struct tlist_t* tlist);
+int8_t task_tree_tlist_init(struct tlist_t* tlist);
 
 //changes the size of {tlist} to hold {newsize} elements/tasks
-int8_t tlist_resize(struct tlist_t* tlist, uint32_t newsize);
+int8_t task_tree_tlist_resize(struct tlist_t* tlist, uint32_t newsize);
 
-//frees the momory of the tasks list
-int8_t tlist_free(struct tlist_t* tlist);
+//frees the memory of the tasks list
+int8_t task_tree_tlist_free(struct tlist_t* tlist);
+
 
 /***************************************************************************************************/
-/******************************************* tlist_add.. *******************************************/
+/****************************************** tlist_task.. *******************************************/
 /***************************************************************************************************/
 
 //adds a task {task_t} to the task list {tlist_t}
 //if {task*} is a NULL pointer creates an empty task
 //
-//you can call tlist_add_task(tlist, newtask("BismiAllah tname"))
-int8_t tlist_add_task(struct tlist_t* tlist, struct task_t* task);
+//you can call task_tree_tlist_task_add(tlist, task_tree_task_new("BismiAllah tname"))
+int8_t task_tree_tlist_task_add(struct tlist_t* tlist, struct task_t* task);
 
 #endif
 
