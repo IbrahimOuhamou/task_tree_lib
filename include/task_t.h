@@ -10,7 +10,12 @@ struct task_t
     uint32_t id;
     uint8_t progress;
     char name[30];
-    //uint32 parents_id_list, children_id_list;
+    
+    /*array of parents IDs*/
+    /*
+    uint32_t* parnets_id_list;
+    uint32_t* children_id_list;
+    */
     //time_t or equivalent
 };
 
