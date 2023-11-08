@@ -32,3 +32,22 @@ int8_t task_tree_task_free(struct task_t* task)
     free(task);
     return 0;
 }
+
+//adds {child_id} to {task->children_id_list}
+int8_t task_tree_task_children_list_add_id(struct task_t* task, uint32_t child_id)
+{
+    task->children_id_list_size += 1;
+    task->children_id_list = (uint32_t*)(realloc(task->children_id_list, task->children_id_list_size));
+    task->children_id_list[task->children_id_list_size -1] = child_id;
+    return 0;
+}
+
+//adds {parent_id} to {task->parents_id list}
+int8_t task_tree_task_parents_list_add_id(struct task_t* task, uint32_t parent_id)
+{
+    task->parents_id_list_size += 1;
+    task->parents_id_list = (uint32_t*)(realloc(task->parents_id_list ,task->parents_id_list_size));
+    task->parents_id_list[task->parents_id_list_size - 1] = parent_id;
+    return 0;
+}
+

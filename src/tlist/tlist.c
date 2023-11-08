@@ -91,7 +91,7 @@ int8_t task_tree_tlist_task_add(struct tlist_t* tlist, struct task_t* task)
 //also adds {task_id} to {tlist[chile_id]->parents_list}
 //
 //return 0 on success and a negative value on failure
-int8_t task_tree_task_child_add(struct tlist_t* tlist, uint32_t task_id, uint32_t child_id)
+int8_t task_tree_tlist_task_child_add(struct tlist_t* tlist, uint32_t task_id, uint32_t child_id)
 {
     if(NULL == tlist) {return -1;}
     //make sure it is in bound
@@ -102,16 +102,8 @@ int8_t task_tree_task_child_add(struct tlist_t* tlist, uint32_t task_id, uint32_
     struct task_t* child = tlist->data[child_id];
     if(NULL == task || NULL == child) {return -1;}
 
-
-    //add {child_id} to {tlist[task_id]->children_list}
-    task->children_id_list_size += 1;
-    task->children_id_list = (uint32_t*)(realloc(task->children_id_list, task->children_id_list_size));
-    task->children_id_list[task->children_id_list_size -1] = child_id;
-
-    //add {task_id} to {child->parents_id_list}
-    child->parents_id_list_size += 1;
-    child->parents_id_list = (uint32_t*)(realloc(child->parents_id_list, child->parents_id_list_size));
-    child->parents_id_list[child->parents_id_list_size - 1] = task_id;
+    task_tree_task_children_list_add_id(task, child_id);
+    task_tree_task_parents_list_add_id(child, task_id);
     return 0;
 }
 
@@ -121,7 +113,7 @@ int8_t task_tree_task_child_add(struct tlist_t* tlist, uint32_t task_id, uint32_
 //also adds {task_id} to {tlist[parent_id]->children_list}
 //
 //return 0 on success and a negative value on failure
-int8_t task_tree_task_parent_add(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
+int8_t task_tree_tlist_task_parent_add(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
 {
     if(NULL == tlist) {return -1;}
     //make sure it is in bound
@@ -132,17 +124,8 @@ int8_t task_tree_task_parent_add(struct tlist_t* tlist, uint32_t task_id, uint32
     struct task_t* parent = tlist->data[parent_id];
     if(NULL == task || NULL == parent) {return -1;}
 
-
-    //add {parent_id} to {tlist[task_id]->parents_list}
-    task->parents_id_list_size += 1;
-    task->parents_id_list = (uint32_t*)(realloc(task->parents_id_list ,task->parents_id_list_size));
-    task->parents_id_list[task->parents_id_list_size - 1] = parent_id;
-
-    //also adds {task_id} to {tlist[parent_id]->children_list}
-    parent->children_id_list_size += 1;
-    parent->children_id_list = (uint32_t*)(realloc(parent->children_id_list, parent->children_id_list_size));
-    parent->children_id_list[parent->children_id_list_size -1] = task_id;
-
+    task_tree_task_parents_list_add_id(task, parent_id);
+    task_tree_task_children_list_add_id(parent, task_id);
     return 0;
 }
 

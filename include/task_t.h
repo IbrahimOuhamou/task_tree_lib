@@ -27,6 +27,9 @@ struct task_t* task_tree_task_new(const char* tname);
 int8_t task_tree_task_free(struct task_t* task);
 
 //adds {child_id} to {task->children_id_list}
-int8_t task_tree_task_add_child_id(struct task_t* task, uint32_t child_id);
+int8_t task_tree_task_children_list_add_id(struct task_t* task, uint32_t child_id);
+
+//adds {parent_id} to {task->parents_id list}
+int8_t task_tree_task_parents_list_add_id(struct task_t* task, uint32_t parent_id);
 
 #endif
