@@ -24,7 +24,7 @@ struct tlist_t
                                             /*BismiAllah*/
 
 /***************************************************************************************************/
-/****************************************** tlist_task.. *******************************************/
+/****************************************** tlist.. *******************************************/
 /***************************************************************************************************/
 
 //inits tlist
@@ -46,6 +46,18 @@ int8_t task_tree_tlist_free(struct tlist_t* tlist);
 //
 //you can call task_tree_tlist_task_add(tlist, task_tree_task_new("BismiAllah tname"))
 int8_t task_tree_tlist_task_add(struct tlist_t* tlist, struct task_t* task);
+
+/****************************************** tlist_task_child.. *******************************************/
+
+//adds {child_id} to {tlist[task_id]->children_list}
+//also adds {task_id} to {tlist[chile_id]->parents_list}
+int8_t task_tree_tlist_task_child_add(struct tlist_t* tlist, uint32_t task_id, uint32_t child_id);
+
+/****************************************** tlist_task_parent.. *******************************************/
+
+//adds {parent_id} to {tlist[task_id]->parents_list}
+//also adds {task_id} to {tlist[parent_id]->children_list}
+int8_t task_tree_tlist_task_parent_add(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id);
 
 #endif
 
