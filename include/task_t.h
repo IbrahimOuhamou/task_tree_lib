@@ -30,15 +30,15 @@ int8_t task_tree_task_free(struct task_t* task);
 int8_t task_tree_task_set_name(struct task_t* task, const char* new_name);
 
 //adds {child_id} to {task->children_id_list}
-int8_t task_tree_task_children_list_add_id(struct task_t* task, uint32_t child_id);
+int8_t task_tree_task_children_id_list_add_id(struct task_t* task, uint32_t child_id);
 
 //return 1 if it has the child and 0 if not
-int8_t task_tree_task_children_list_has_child(struct task_t* task, uint32_t child_id);
+int8_t task_tree_task_children_id_list_has_child(struct task_t* task, uint32_t child_id);
 
 //adds {parent_id} to {task->parents_id list}
-int8_t task_tree_task_parents_list_add_id(struct task_t* task, uint32_t parent_id);
+int8_t task_tree_task_parents_id_list_add_id(struct task_t* task, uint32_t parent_id);
 
 //return 1 if it has the parent and 0 if not
-int8_t task_tree_task_parents_list_has_child(struct task_t* task, uint32_t parent_id);
+int8_t task_tree_task_parents_id_list_has_child(struct task_t* task, uint32_t parent_id);
 
 #endif

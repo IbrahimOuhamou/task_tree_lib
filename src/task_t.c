@@ -43,7 +43,7 @@ int8_t task_tree_task_set_name(struct task_t* task, const char* new_name)
 }
 
 //adds {child_id} to {task->children_id_list}
-int8_t task_tree_task_children_list_add_id(struct task_t* task, uint32_t child_id)
+int8_t task_tree_task_children_id_list_add_id(struct task_t* task, uint32_t child_id)
 {
     if(NULL == task) {return -1;}
 
@@ -63,7 +63,7 @@ int8_t task_tree_task_children_list_add_id(struct task_t* task, uint32_t child_i
 }
 
 //return 1 if it has the child and 0 if not
-int8_t task_tree_task_children_list_has_child(struct task_t* task, uint32_t child_id)
+int8_t task_tree_task_children_id_list_has_child(struct task_t* task, uint32_t child_id)
 {
     if(NULL == task) {return -1;}
 
@@ -79,7 +79,7 @@ int8_t task_tree_task_children_list_has_child(struct task_t* task, uint32_t chil
 }
 
 //adds {parent_id} to {task->parents_id list}
-int8_t task_tree_task_parents_list_add_id(struct task_t* task, uint32_t parent_id)
+int8_t task_tree_task_parents_id_list_add_id(struct task_t* task, uint32_t parent_id)
 {
     if(NULL == task) {return -1;}
 
@@ -99,7 +99,7 @@ int8_t task_tree_task_parents_list_add_id(struct task_t* task, uint32_t parent_i
 }
 
 //return 1 if it has the parent and 0 if not
-int8_t task_tree_task_parents_list_has_child(struct task_t* task, uint32_t parent_id)
+int8_t task_tree_task_parents_id_list_has_child(struct task_t* task, uint32_t parent_id)
 {
     if(NULL == task) {return -1;}
 
