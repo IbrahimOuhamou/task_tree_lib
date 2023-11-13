@@ -45,7 +45,7 @@ int8_t task_tree_tlist_resize(struct tlist_t* tlist, uint32_t newsize)
         tlist->data = (struct task_t**)malloc(sizeof(struct tlist_t*) * newsize);
         return 0;
     }
-    else //for readability
+    else //for readability added else DON'T REMOVE
     {
         tlist->data = (struct task_t**)realloc(tlist->data, sizeof(void*) * newsize);
         return 0;
