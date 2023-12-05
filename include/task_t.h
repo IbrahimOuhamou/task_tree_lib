@@ -32,13 +32,26 @@ int8_t task_tree_task_set_name(struct task_t* task, const char* new_name);
 //adds {child_id} to {task->children_id_list}
 int8_t task_tree_task_children_id_list_add_id(struct task_t* task, uint32_t child_id);
 
+//removes {child_id} from {task->children_id_list}
+int8_t task_tree_task_children_id_list_remove_id(struct task_t* task, uint32_t child_id);
+
 //return 1 if it has the child and 0 if not
 int8_t task_tree_task_children_id_list_has_child(struct task_t* task, uint32_t child_id);
 
 //adds {parent_id} to {task->parents_id list}
 int8_t task_tree_task_parents_id_list_add_id(struct task_t* task, uint32_t parent_id);
 
+//removes {parent_id} from {task->parents_id list}
+//return 0 on succes and -1 on failure
+int8_t task_tree_task_parents_id_list_remove_id(struct task_t* task, uint32_t parent_id);
+
 //return 1 if it has the parent and 0 if not
-int8_t task_tree_task_parents_id_list_has_child(struct task_t* task, uint32_t parent_id);
+int8_t task_tree_task_parents_id_list_has_parent(struct task_t* task, uint32_t parent_id);
+
+//sets tasks's progress without updating the parents' progress.
+//will set proress even if {task} has children
+//to update the parents' progress use the "tlist_t.h" fumction
+int8_t task_tree_task_set_progress(struct task_t* task, uint8_t progress);
 
 #endif
+

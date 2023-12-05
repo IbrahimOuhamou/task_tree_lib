@@ -72,7 +72,7 @@ int8_t task_tree_tlist_free(struct tlist_t* tlist)
 /******************************************* tlist_task.. *******************************************/
 /***************************************************************************************************/
 
-int8_t task_tree_tlist_task_add(struct tlist_t* tlist, struct task_t* task)
+int8_t task_tree_tlist_add_task(struct tlist_t* tlist, struct task_t* task)
 {
     if (NULL == tlist) {return -1;}
     task_tree_tlist_resize(tlist, tlist->size + 1);
@@ -87,11 +87,11 @@ int8_t task_tree_tlist_task_add(struct tlist_t* tlist, struct task_t* task)
 
 /****************************************** tlist_task_child.. *******************************************/
 
-//adds {child_id} to {tlist[task_id]->children_list}
-//also adds {task_id} to {tlist[chile_id]->parents_list}
+//adds {child_id} to {tlist[task_id]->children_id_list}
+//also adds {task_id} to {tlist[chile_id]->parents_id_list}
 //
 //return 0 on success and a negative value on failure
-int8_t task_tree_tlist_task_child_add(struct tlist_t* tlist, uint32_t task_id, uint32_t child_id)
+int8_t task_tree_tlist_task_children_id_list_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t child_id)
 {
     if(NULL == tlist) {return -1;}
     //make sure it is in bound
@@ -102,21 +102,21 @@ int8_t task_tree_tlist_task_child_add(struct tlist_t* tlist, uint32_t task_id, u
     struct task_t* child = tlist->data[child_id];
     if(NULL == task || NULL == child) {return -1;}
 
-    task_tree_task_children_list_add_id(task, child_id);
-    task_tree_task_parents_list_add_id(child, task_id);
+    task_tree_task_children_id_list_add_id(task, child_id);
+    task_tree_task_parents_id_list_add_id(child, task_id);
     return 0;
 }
 
 /****************************************** tlist_task_parent.. *******************************************/
 
-//adds {parent_id} to {tlist[task_id]->parents_list}
-//also adds {task_id} to {tlist[parent_id]->children_list}
+//adds {parent_id} to {tlist[task_id]->parents_id_list}
+//also adds {task_id} to {tlist[parent_id]->children_id_list}
 //
 //return 0 on success and a negative value on failure
-int8_t task_tree_tlist_task_parent_add(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
+int8_t task_tree_tlist_task_parents_list_id_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
 {
     if(NULL == tlist) {return -1;}
-    //make sure it is in bound
+    //make sure it is in range
     if(parent_id >= tlist->size || task_id >= tlist->size) {return -1;}
 
     //for easy use
@@ -124,8 +124,8 @@ int8_t task_tree_tlist_task_parent_add(struct tlist_t* tlist, uint32_t task_id, 
     struct task_t* parent = tlist->data[parent_id];
     if(NULL == task || NULL == parent) {return -1;}
 
-    task_tree_task_parents_list_add_id(task, parent_id);
-    task_tree_task_children_list_add_id(parent, task_id);
+    task_tree_task_parents_id_list_add_id(task, parent_id);
+    task_tree_task_children_id_list_add_id(parent, task_id);
     return 0;
 }
 
