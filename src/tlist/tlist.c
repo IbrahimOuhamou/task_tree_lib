@@ -30,7 +30,7 @@ int8_t task_tree_tlist_init(struct tlist_t* tlist)
     tlist->size = 0;
     tlist->data = NULL;
 
-  return 0;
+    return 0;
 }
 
 //changes the size of {tlist} to hold {newsize} elements/tasks
@@ -45,7 +45,7 @@ int8_t task_tree_tlist_resize(struct tlist_t* tlist, uint32_t newsize)
         tlist->data = (struct task_t**)malloc(sizeof(struct tlist_t*) * newsize);
         return 0;
     }
-    else //for readability added else DON'T REMOVE
+    else //for readability added 'else' DON'T REMOVE
     {
         tlist->data = (struct task_t**)realloc(tlist->data, sizeof(void*) * newsize);
         return 0;
@@ -85,6 +85,28 @@ int8_t task_tree_tlist_add_task(struct tlist_t* tlist, struct task_t* task)
     return 0;
 }
 
+//removes {tlist[task_id]} from {tlist} and de-attaches its children and its parents
+int8_t task_tree_tlist_task_free(struct tlist_t* tlist, uint32_t task_id)
+{
+    if(NULL == tlist) {return -1;}
+    if(task_id >= tlist->size) {return -1;}
+
+    if(NULL == tlist->data[task_id]) {return -1;}
+    // 
+    struct task_t* task = tlist->data[task_id];
+    for(uint32_t i = 0; i < task->children_id_list_size; i++)
+    {
+        task_tree_tlist_task_children_id_list_remove_id(tlist, task_id, task->children_id_list[i]);
+    }
+    for(uint32_t i = 0; i < task->parents_id_list_size; i++)
+    {
+        task_tree_tlist_task_parents_id_list_remove_id(tlist, task_id, task->parents_id_list[i]);
+    }
+    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
+    task_tree_task_free(task);
+    return 0;
+}
+
 /****************************************** tlist_task_child.. *******************************************/
 
 //adds {child_id} to {tlist[task_id]->children_id_list}
@@ -104,8 +126,32 @@ int8_t task_tree_tlist_task_children_id_list_add_id(struct tlist_t* tlist, uint3
 
     task_tree_task_children_id_list_add_id(task, child_id);
     task_tree_task_parents_id_list_add_id(child, task_id);
+
+    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
     return 0;
 }
+
+//removes {child_id} from {tlist[task_id]->children_id_list}
+//also removes {task_id} from {tlist[child_id]->parents_id_list}
+//update parents' peogress.
+int8_t task_tree_tlist_task_children_id_list_remove_id(struct tlist_t *tlist, uint32_t task_id, uint32_t child_id)
+{
+    if(NULL == tlist) {return -1;}
+    //make sure it is in bound
+    if(child_id >= tlist->size || task_id >= tlist->size) {return -1;}
+
+    //for easy use
+    struct task_t* task = tlist->data[task_id];
+    struct task_t* child = tlist->data[child_id];
+    if(NULL == task || NULL == child) {return -1;}
+    
+    task_tree_task_children_id_list_remove_id(task, child_id);
+    task_tree_task_parents_id_list_remove_id(child, task_id);
+
+    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
+    return 0;
+}
+
 
 /****************************************** tlist_task_parent.. *******************************************/
 
@@ -113,7 +159,7 @@ int8_t task_tree_tlist_task_children_id_list_add_id(struct tlist_t* tlist, uint3
 //also adds {task_id} to {tlist[parent_id]->children_id_list}
 //
 //return 0 on success and a negative value on failure
-int8_t task_tree_tlist_task_parents_list_id_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
+int8_t task_tree_tlist_task_parents_id_list_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
 {
     if(NULL == tlist) {return -1;}
     //make sure it is in range
@@ -126,6 +172,70 @@ int8_t task_tree_tlist_task_parents_list_id_add_id(struct tlist_t* tlist, uint32
 
     task_tree_task_parents_id_list_add_id(task, parent_id);
     task_tree_task_children_id_list_add_id(parent, task_id);
+    
+    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
+    return 0;
+}
+
+//removes {parent_id} from {tlist[task_id]->parents_id_list}
+//also removes {task_id} from {tlist[parent_id]->children_id_list}
+//updates parents' progress
+int8_t task_tree_tlist_task_parents_id_list_remove_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
+{
+    if(NULL == tlist) {return -1;}
+    //make sure it is in range
+    if(parent_id >= tlist->size || task_id >= tlist->size) {return -1;}
+
+    //for easy use
+    struct task_t* task = tlist->data[task_id];
+    struct task_t* parent = tlist->data[parent_id];
+    if(NULL == task || NULL == parent) {return -1;}
+
+    task_tree_task_parents_id_list_remove_id(task, parent_id);
+    task_tree_task_children_id_list_remove_id(parent, task_id);
+
+    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
+    return 0;
+}
+
+/****************************************** tlist_task_progress.. *******************************************/
+
+//sets the progress of {tlist[task_id]} and calls 'task_tree_tlist_task_update_progress_from_children(tlist, task_id)'
+int8_t task_tree_tlist_task_set_progress(struct tlist_t* tlist, uint32_t task_id, uint8_t progress)
+{
+    if(NULL == tlist) {return -1;}
+    //make sure it is in range
+    if(task_id >= tlist->size) {return -1;}
+    if(100 < progress) {progress = 100;}
+    
+    struct task_t* task = tlist->data[task_id];
+    if(NULL == task) {return -1;}
+
+    task->progress = progress;
+    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
+    return 0;
+}
+
+//calculates progress from children and updates the progress of {tlist[task_id]} parents
+int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist, uint32_t task_id)
+{
+    if(NULL == tlist) {return -1;}
+    //make sure it is in range
+    if(task_id >= tlist->size) {return -1;}
+    struct task_t* task = tlist->data[task_id];
+    if(NULL == task) {return -1;}
+
+    uint16_t progress_sum = 0;
+    for (uint32_t i = 0; i < task->children_id_list_size; i++)
+    {
+        struct task_t* child = tlist->data[task->parents_id_list[i]];
+        progress_sum += child->progress;
+    }
+    task->progress = progress_sum / task->children_id_list_size;
+    if (100 < task->progress)
+    {
+        task->progress = 100;
+    }
     return 0;
 }
 

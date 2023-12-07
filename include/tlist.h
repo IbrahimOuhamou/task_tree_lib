@@ -48,7 +48,7 @@ int8_t task_tree_tlist_free(struct tlist_t* tlist);
 int8_t task_tree_tlist_add_task(struct tlist_t* tlist, struct task_t* task);
 
 //removes {tlist[task_id]} from {tlist} and de-attaches its children and its parents
-int8_t task_tree_tlist_remove_task(struct tlist_t* tlist, uint32_t task_id);
+int8_t task_tree_tlist_task_free(struct tlist_t* tlist, uint32_t task_id);
 
 /****************************************** tlist_task_children_id_list.. *******************************************/
 
@@ -67,12 +67,12 @@ int8_t task_tree_tlist_task_children_id_list_remove_id(struct tlist_t *tlist, ui
 //adds {parent_id} to {tlist[task_id]->parents_id_list}
 //also adds {task_id} to {tlist[parent_id]->children_id_list}
 //updates parents' progress
-int8_t task_tree_tlist_task_parents_id_list_id_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id);
+int8_t task_tree_tlist_task_parents_id_list_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id);
 
 //removes {parent_id} from {tlist[task_id]->parents_id_list}
 //also removes {task_id} from {tlist[parent_id]->children_id_list}
 //updates parents' progress
-int8_t task_tree_tlist_task_parents_id_list_id_remove_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id);
+int8_t task_tree_tlist_task_parents_id_list_remove_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id);
 
 /****************************************** tlist_task_progress.. *******************************************/
 
@@ -80,7 +80,7 @@ int8_t task_tree_tlist_task_parents_id_list_id_remove_id(struct tlist_t* tlist, 
 int8_t task_tree_tlist_task_set_progress(struct tlist_t* tlist, uint32_t task_id, uint8_t progress);
 
 //calculates progress from children and updates the progress of {tlist[task_id]} parents
-int8_t task_tree_tlist_task_update_progress_from_children(struct tlist_t* tlist, uint32_t task_id);
+int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist, uint32_t task_id);
 
 #endif
 
