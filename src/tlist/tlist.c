@@ -228,10 +228,11 @@ int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist,
     uint16_t progress_sum = 0;
     for (uint32_t i = 0; i < task->children_id_list_size; i++)
     {
-        struct task_t* child = tlist->data[task->parents_id_list[i]];
+        struct task_t* child = tlist->data[task->children_id_list[i]];
+        if(NULL == child) {continue;}
         progress_sum += child->progress;
     }
-    task->progress = progress_sum / task->children_id_list_size;
+    task->progress = (uint8_t) (progress_sum / task->children_id_list_size);
     if (100 < task->progress)
     {
         task->progress = 100;
