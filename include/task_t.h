@@ -36,7 +36,7 @@ int8_t task_tree_task_children_id_list_add_id(struct task_t* task, uint32_t chil
 int8_t task_tree_task_children_id_list_remove_id(struct task_t* task, uint32_t child_id);
 
 //return 1 if it has the child and 0 if not
-int8_t task_tree_task_children_id_list_has_child(struct task_t* task, uint32_t child_id);
+int8_t task_tree_task_children_id_list_has_id(struct task_t* task, uint32_t child_id);
 
 //adds {parent_id} to {task->parents_id list}
 int8_t task_tree_task_parents_id_list_add_id(struct task_t* task, uint32_t parent_id);
@@ -46,7 +46,7 @@ int8_t task_tree_task_parents_id_list_add_id(struct task_t* task, uint32_t paren
 int8_t task_tree_task_parents_id_list_remove_id(struct task_t* task, uint32_t parent_id);
 
 //return 1 if it has the parent and 0 if not
-int8_t task_tree_task_parents_id_list_has_parent(struct task_t* task, uint32_t parent_id);
+int8_t task_tree_task_parents_id_list_has_id(struct task_t* task, uint32_t parent_id);
 
 //sets tasks's progress without updating the parents' progress.
 //will set proress even if {task} has children

@@ -80,7 +80,7 @@ int8_t task_tree_task_children_id_list_remove_id(struct task_t* task, uint32_t c
 {
     if(NULL == task) {return -1;}
 
-    if(!task_tree_task_children_id_list_has_child(task, child_id))
+    if(!task_tree_task_children_id_list_has_id(task, child_id))
     {
         return -1;
     }
@@ -94,7 +94,7 @@ int8_t task_tree_task_children_id_list_remove_id(struct task_t* task, uint32_t c
 }
 
 //return 1 if it has the child and 0 if not
-int8_t task_tree_task_children_id_list_has_child(struct task_t* task, uint32_t child_id)
+int8_t task_tree_task_children_id_list_has_id(struct task_t* task, uint32_t child_id)
 {
     if(NULL == task) {return -1;}
 
@@ -136,7 +136,7 @@ int8_t task_tree_task_parents_id_list_remove_id(struct task_t* task, uint32_t pa
 {
     if(NULL == task) {return -1;}
 
-    if(!task_tree_task_parents_id_list_has_parent(task, parent_id))
+    if(!task_tree_task_parents_id_list_has_id(task, parent_id))
     {
         return -1;
     }
@@ -150,7 +150,7 @@ int8_t task_tree_task_parents_id_list_remove_id(struct task_t* task, uint32_t pa
 }
 
 //return 1 if it has the parent and 0 if not
-int8_t task_tree_task_parents_id_list_has_parent(struct task_t* task, uint32_t parent_id)
+int8_t task_tree_task_parents_id_list_has_id(struct task_t* task, uint32_t parent_id)
 {
     if(NULL == task) {return -1;}
 
