@@ -22,7 +22,8 @@ struct task_t* task_tree_task_new(const char* tname)
 {
     struct task_t* taskptr = (struct task_t*)malloc(sizeof(struct task_t));
     taskptr->progress = 0;
-    memcpy(taskptr->name, tname, sizeof(taskptr->name));
+    //memcpy(taskptr->name, tname, sizeof(taskptr->name));
+    task_tree_task_set_name(taskptr, tname);
     taskptr->children_id_list_size = 0;
     taskptr->parents_id_list_size = 0;
     taskptr->children_id_list = NULL;
