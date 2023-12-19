@@ -104,6 +104,7 @@ int8_t task_tree_tlist_task_free(struct tlist_t* tlist, uint32_t task_id)
     }
     task_tree_tlist_task_progress_update_from_children(tlist, task_id);
     task_tree_task_free(task);
+    tlist->data[task_id] = NULL;
     return 0;
 }
 
