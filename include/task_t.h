@@ -29,6 +29,9 @@ int8_t task_tree_task_free(struct task_t* task);
 //sets {task->name} to {new-name}
 int8_t task_tree_task_set_name(struct task_t* task, const char* new_name);
 
+//returns {task->name} and NULL if {task} is NULL
+char* task_tree_task_get_name(struct task_t* task);
+
 //adds {child_id} to {task->children_id_list}
 int8_t task_tree_task_children_id_list_add_id(struct task_t* task, uint32_t child_id);
 

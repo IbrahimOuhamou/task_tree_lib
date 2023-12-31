@@ -55,6 +55,13 @@ int8_t task_tree_task_set_name(struct task_t* task, const char* new_name)
     return 0;
 }
 
+//returns {task->name} and NULL if {task} is NULL
+char* task_tree_task_get_name(struct task_t* task)
+{
+    if(NULL == task) {return NULL;}
+    return task->name;
+}
+
 //adds {child_id} to {task->children_id_list}
 int8_t task_tree_task_children_id_list_add_id(struct task_t* task, uint32_t child_id)
 {
