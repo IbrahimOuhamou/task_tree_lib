@@ -309,6 +309,8 @@ int8_t task_tree_tlist_file_load(struct tlist_t *tlist, const char *path)
     task_tree_tlist_free(tlist);
     FILE *fp = fopen(path, "rb");
 
+    if(NULL == fp) return -1;
+
     uint8_t version[3];
     fread(version, sizeof(version[0]), sizeof(version) / sizeof(version[0]), fp);
     fread(&tlist->size, sizeof(tlist->size), 1, fp);
