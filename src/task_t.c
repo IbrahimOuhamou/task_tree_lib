@@ -8,6 +8,7 @@
 
 #include "../include/task_t.h"
 
+//TODO remove this section by the will of Allah
 //this section is for static hints
 /*******************************************/
 //this is to keep the index of the id instead of making them into more functions
@@ -63,13 +64,13 @@ int8_t task_tree_task_children_id_list_add_id(struct task_t* task, uint32_t chil
     if(0 == task->children_id_list_size || NULL == task->children_id_list)
     {
         task->children_id_list_size = 1;
-        task->children_id_list = (uint32_t*)malloc(sizeof(uint32_t));
+        task->children_id_list = (uint32_t*)malloc(sizeof(task->id));
         task->children_id_list[0] = child_id;
     }
     else
     {
        task->children_id_list_size += 1;
-       task->children_id_list = (uint32_t*)(realloc(task->children_id_list, task->children_id_list_size * sizeof(task->children_id_list[0])));
+       task->children_id_list = (uint32_t*)(realloc(task->children_id_list, task->children_id_list_size * sizeof(task->id)));
        task->children_id_list[task->children_id_list_size -1] = child_id;
     }
     return 0;
@@ -87,6 +88,7 @@ int8_t task_tree_task_children_id_list_remove_id(struct task_t* task, uint32_t c
     }
     else
     {
+        //TODO remove this hint variable
         task->children_id_list[task_tree_task_hint_children_id_list_id_index] = task->children_id_list[task->children_id_list_size];
         task->children_id_list -= 1;
         task->children_id_list = (uint32_t*)realloc(task->children_id_list, task->children_id_list_size * sizeof(task->children_id_list[0]));
@@ -103,6 +105,7 @@ int8_t task_tree_task_children_id_list_has_id(struct task_t* task, uint32_t chil
     {
         if(child_id == task->children_id_list[i])
         {
+            //TODO remove hint variable
             task_tree_task_hint_children_id_list_id_index = i;
             return 1;
         }
@@ -119,13 +122,13 @@ int8_t task_tree_task_parents_id_list_add_id(struct task_t* task, uint32_t paren
     if(0 == task->parents_id_list_size || NULL == task->parents_id_list)
     {
         task->parents_id_list_size = 1;
-        task->parents_id_list = (uint32_t*)(malloc(sizeof(uint32_t)));
+        task->parents_id_list = (uint32_t*)(malloc(sizeof(task->id)));
         task->parents_id_list[0] = parent_id;
     }
     else
     {
         task->parents_id_list_size += 1;
-        task->parents_id_list = (uint32_t*)(realloc(task->parents_id_list ,task->parents_id_list_size * sizeof(task->parents_id_list[0])));
+        task->parents_id_list = (uint32_t*)(realloc(task->parents_id_list ,task->parents_id_list_size * sizeof(task->id)));
         task->parents_id_list[task->parents_id_list_size - 1] = parent_id;
     }
     return 0;
@@ -143,9 +146,10 @@ int8_t task_tree_task_parents_id_list_remove_id(struct task_t* task, uint32_t pa
     }
     else
     {
+        //TODO remove hint variable by the will of Allah
         task->parents_id_list[task_tree_task_hint_parents_id_list_id_index] = task->parents_id_list[task->parents_id_list_size];
         task->parents_id_list -= 1;
-        task->parents_id_list = (uint32_t*)realloc(task->parents_id_list, task->parents_id_list_size * sizeof(task->parents_id_list[0]));
+        task->parents_id_list = (uint32_t*)realloc(task->parents_id_list, task->parents_id_list_size * sizeof(task->id));
         return 0;
     }
 }
@@ -159,6 +163,7 @@ int8_t task_tree_task_parents_id_list_has_id(struct task_t* task, uint32_t paren
     {
         if(parent_id == task->parents_id_list[i])
         {
+            //TODO remove hint variable by the will of Allah
             task_tree_task_hint_parents_id_list_id_index = i;
             return 1;
         }
