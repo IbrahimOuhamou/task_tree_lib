@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdio.h>
 
 #include "../../include/tlist.h"
 
@@ -258,5 +259,79 @@ uint32_t task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname)
     }
 
     return sizeof(tlist->data[0]->id);
+}
+
+/***************************************************************************************************/
+/****************************************** tlist_file.. *******************************************/
+/***************************************************************************************************/
+
+//============ file structure
+//============ uint8_t version[3] - tlist->size
+//============ tlist->data[0].id - tlist->data[0].name - tlist->data[0].progress
+//============ .
+//============ .
+//============ .
+//============ tlist->data[tlist->size].id - tlist->data[tlist->size].name - tlist->data[tlist->size].progress
+
+//saves tlist data onto the file provided
+//returns 0 on success and -1 on failure
+int8_t task_tree_tlist_file_save(struct tlist_t *tlist, const char *path)
+{
+    if(NULL == tlist || NULL == path) return -1;
+
+    FILE *fp = fopen(path, "wb");
+    if(NULL == fp) return -1;
+
+    uint8_t version[3] = {1, 0, 0};
+    fwrite(version, sizeof(version[0]), sizeof(version) / sizeof(version[0]), fp);
+    fwrite(&tlist->size, sizeof(tlist->size), 1, fp);
+
+    for(uint32_t i = 0; i < tlist->size; i++)
+    {
+        struct task_t *task = tlist->data[i];
+        fwrite(&task->id, sizeof(task->id), 1, fp);
+        fwrite(&task->name[0], sizeof(task->name[0]), sizeof(task->name) / sizeof(task->name[0]), fp);
+        fwrite(&task->parents_id_list_size, sizeof(task->parents_id_list_size), 1, fp);
+        fwrite(task->parents_id_list, sizeof(task->parents_id_list[0]), task->parents_id_list_size, fp);
+        fwrite(&task->children_id_list_size, sizeof(task->children_id_list_size), 1, fp);
+        fwrite(task->children_id_list, sizeof(task->children_id_list[0]), task->children_id_list_size, fp);
+    }
+    fclose(fp);
+    return 0;
+}
+
+//loads tlist data from the file provided
+//returns 0 on success and -1 on failure
+int8_t task_tree_tlist_file_load(struct tlist_t *tlist, const char *path)
+{
+    if(NULL == tlist || NULL == path) return -1;
+
+    task_tree_tlist_free(tlist);
+    FILE *fp = fopen(path, "rb");
+
+    uint8_t version[3];
+    fread(version, sizeof(version[0]), sizeof(version) / sizeof(version[0]), fp);
+    fread(&tlist->size, sizeof(tlist->size), 1, fp);
+
+    task_tree_tlist_resize(tlist, tlist->size);
+    for(uint32_t i = 0; i < tlist->size; i++)
+    {
+        struct task_t *task = task_tree_task_new("bismi_allah");
+        tlist->data[i] = task;
+        fread(&task->id, sizeof(task->id), 1, fp);
+        
+        char task_name_buffer[sizeof(task->name)];
+        fread(task_name_buffer, sizeof(task->name[0]), sizeof(task->name) / sizeof(task->name[0]), fp);
+        task_tree_task_set_name(task, task_name_buffer);
+
+        fread(&task->parents_id_list_size, sizeof(task->parents_id_list_size), 1, fp);
+        task->parents_id_list = (uint32_t*)malloc(task->parents_id_list_size * sizeof(task->id));
+        fread(task->parents_id_list, sizeof(task->id), task->parents_id_list_size, fp);
+        fread(&task->children_id_list_size, sizeof(task->children_id_list_size), 1, fp);
+        task->parents_id_list = (uint32_t*)malloc(task->children_id_list_size * sizeof(task->id));
+        fread(task->children_id_list, sizeof(task->id), task->children_id_list_size, fp);
+    }
+
+    fclose(fp);
 }
 
