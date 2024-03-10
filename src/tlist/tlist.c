@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "../../include/tlist.h"
 
@@ -250,7 +251,7 @@ uint32_t task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname)
 
     for(uint32_t i = 0; i < tlist->size; i++)
     {
-        if(0 == strcmp(tlist->date[i]->name, tname))
+        if(0 == strcmp(tlist->data[i]->name, tname))
         {
             return i;
         }
