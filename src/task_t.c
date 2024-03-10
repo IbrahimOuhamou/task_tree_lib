@@ -127,7 +127,7 @@ int8_t task_tree_task_parents_id_list_remove_id(struct task_t* task, uint32_t pa
 {
     if(NULL == task) {return -1;}
 
-    for(uint32_t i = 0; i < task->parents_id_list; i++)
+    for(uint32_t i = 0; i < task->parents_id_list_size; i++)
     {
         if(parent_id == task->parents_id_list[i])
         {
