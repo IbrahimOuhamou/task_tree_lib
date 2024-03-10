@@ -241,3 +241,21 @@ int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist,
     return 0;
 }
 
+/****************************************** tlist_task_search... ********************************************/
+
+//returns {id} of task with {tname} and sizeof(task_t->id) if not
+uint32_t task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname)
+{
+    if(NULL == tlist || NULL == tname || '\0' == tname[0]) return sizeof(tlist->data[0]->id);
+
+    for(uint32_t i = 0; i < tlist->size; i++)
+    {
+        if(0 == strcmp(tlist->date[i]->name, tname))
+        {
+            return i;
+        }
+    }
+
+    return sizeof(tlist->data[0]->id);
+}
+

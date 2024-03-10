@@ -82,5 +82,11 @@ int8_t task_tree_tlist_task_set_progress(struct tlist_t* tlist, uint32_t task_id
 //calculates progress from children and updates the progress of {tlist[task_id]} parents
 int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist, uint32_t task_id);
 
+/****************************************** tlist_task_search... ********************************************/
+
+//returns {id} of task with {tname} and sizeof(task_t->id) if not
+uint32_t task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname);
+
+
 #endif
 
