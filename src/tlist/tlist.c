@@ -119,6 +119,7 @@ int8_t task_tree_tlist_task_free(struct tlist_t* tlist, uint32_t task_id)
 int8_t task_tree_tlist_task_children_id_list_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t child_id)
 {
     if(NULL == tlist) {return -1;}
+    if(task_id == child_id) {return -1;}
     //make sure it is in bound
     if(child_id >= tlist->size || task_id >= tlist->size) {return -1;}
 
@@ -165,6 +166,7 @@ int8_t task_tree_tlist_task_children_id_list_remove_id(struct tlist_t *tlist, ui
 int8_t task_tree_tlist_task_parents_id_list_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
 {
     if(NULL == tlist) {return -1;}
+    if(task_id == parent_id) {return -1;}
     //make sure it is in range
     if(parent_id >= tlist->size || task_id >= tlist->size) {return -1;}
 
@@ -228,6 +230,8 @@ int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist,
     struct task_t* task = tlist->data[task_id];
     if(NULL == task) {return -1;}
 
+    if(0 == task->children_id_list_size) {return -1;}
+
     uint16_t progress_sum = 0;
     for (uint32_t i = 0; i < task->children_id_list_size; i++)
     {
@@ -235,7 +239,7 @@ int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist,
         if(NULL == child) {continue;}
         progress_sum += child->progress;
     }
-    task->progress = (uint8_t) (progress_sum / task->children_id_list_size);
+    task->progress = (uint8_t)(progress_sum / task->children_id_list_size);
     if (100 < task->progress)
     {
         task->progress = 100;

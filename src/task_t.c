@@ -52,6 +52,7 @@ int8_t task_tree_task_set_name(struct task_t* task, const char* new_name)
 int8_t task_tree_task_children_id_list_add_id(struct task_t* task, uint32_t child_id)
 {
     if(NULL == task) {return -1;}
+    if(child_id == task->id) {return -1;}
 
     if(0 == task->children_id_list_size || NULL == task->children_id_list)
     {
@@ -108,6 +109,7 @@ int8_t task_tree_task_children_id_list_has_id(struct task_t* task, uint32_t chil
 int8_t task_tree_task_parents_id_list_add_id(struct task_t* task, uint32_t parent_id)
 {
     if(NULL == task) {return -1;}
+    if(parent_id == task->id) {return -1;}
 
     if(0 == task->parents_id_list_size || NULL == task->parents_id_list)
     {
