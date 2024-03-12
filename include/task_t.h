@@ -17,6 +17,8 @@ struct task_t
     uint32_t *parents_id_list;
     uint32_t *children_id_list;
 
+    //ui
+    int16_t pos_x, pos_y; //or maybe incha2Allah pos[2]
     //time_t or equivalent
 };
 

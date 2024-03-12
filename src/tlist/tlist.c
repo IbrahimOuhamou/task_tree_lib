@@ -291,11 +291,14 @@ int8_t task_tree_tlist_file_save(struct tlist_t *tlist, const char *path)
         struct task_t *task = tlist->data[i];
         fwrite(&task->id, sizeof(task->id), 1, fp);
         fwrite(&task->name[0], sizeof(task->name[0]), sizeof(task->name) / sizeof(task->name[0]), fp);
+        fwrite(&task->pos_x, sizeof(task->pos_x), 1, fp);
+        fwrite(&task->pos_y, sizeof(task->pos_y), 1, fp);
         fwrite(&task->parents_id_list_size, sizeof(task->parents_id_list_size), 1, fp);
         fwrite(task->parents_id_list, sizeof(task->parents_id_list[0]), task->parents_id_list_size, fp);
         fwrite(&task->children_id_list_size, sizeof(task->children_id_list_size), 1, fp);
         fwrite(task->children_id_list, sizeof(task->children_id_list[0]), task->children_id_list_size, fp);
     }
+
     fclose(fp);
     return 0;
 }
@@ -325,6 +328,9 @@ int8_t task_tree_tlist_file_load(struct tlist_t *tlist, const char *path)
         char task_name_buffer[sizeof(task->name)];
         fread(task_name_buffer, sizeof(task->name[0]), sizeof(task->name) / sizeof(task->name[0]), fp);
         task_tree_task_set_name(task, task_name_buffer);
+
+        fread(&task->pos_x, sizeof(task->pos_x), 1, fp);
+        fread(&task->pos_y, sizeof(task->pos_y), 1, fp);
 
         fread(&task->parents_id_list_size, sizeof(task->parents_id_list_size), 1, fp);
         task->parents_id_list = (uint32_t*)malloc(task->parents_id_list_size * sizeof(task->id));

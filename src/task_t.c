@@ -19,6 +19,9 @@ struct task_t* task_tree_task_new(const char* tname)
     taskptr->children_id_list = NULL;
     taskptr->parents_id_list = NULL;
 
+    taskptr->pos_x = 0;
+    taskptr->pos_y = 0;
+
     return taskptr;
 }
 
