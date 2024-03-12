@@ -45,19 +45,59 @@ int8_t task_tree_tlist_free(struct tlist_t* tlist);
 //if {task*} is a NULL pointer creates an empty task
 //
 //you can call task_tree_tlist_task_add(tlist, task_tree_task_new("BismiAllah tname"))
-int8_t task_tree_tlist_task_add(struct tlist_t* tlist, struct task_t* task);
+int8_t task_tree_tlist_add_task(struct tlist_t* tlist, struct task_t* task);
 
-/****************************************** tlist_task_child.. *******************************************/
+//removes {tlist[task_id]} from {tlist} and de-attaches its children and its parents
+int8_t task_tree_tlist_task_free(struct tlist_t* tlist, uint32_t task_id);
 
-//adds {child_id} to {tlist[task_id]->children_list}
-//also adds {task_id} to {tlist[chile_id]->parents_list}
-int8_t task_tree_tlist_task_child_add(struct tlist_t* tlist, uint32_t task_id, uint32_t child_id);
+/****************************************** tlist_task_children_id_list.. *******************************************/
 
-/****************************************** tlist_task_parent.. *******************************************/
+//adds {child_id} to {tlist[task_id]->children_id_list}
+//adds {task_id} to {tlist[chile_id]->parents_id_list}
+//updates parents' progress.
+int8_t task_tree_tlist_task_children_id_list_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t child_id);
 
-//adds {parent_id} to {tlist[task_id]->parents_list}
-//also adds {task_id} to {tlist[parent_id]->children_list}
-int8_t task_tree_tlist_task_parent_add(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id);
+//removes {child_id} from {tlist[task_id]->children_id_list}
+//also removes {task_id} from {tlist[child_id]->parents_id_list}
+//update parents' peogress.
+int8_t task_tree_tlist_task_children_id_list_remove_id(struct tlist_t *tlist, uint32_t task_id, uint32_t child_id);
+
+/****************************************** tlist_task_parents_id_list.. *******************************************/
+
+//adds {parent_id} to {tlist[task_id]->parents_id_list}
+//also adds {task_id} to {tlist[parent_id]->children_id_list}
+//updates parents' progress
+int8_t task_tree_tlist_task_parents_id_list_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id);
+
+//removes {parent_id} from {tlist[task_id]->parents_id_list}
+//also removes {task_id} from {tlist[parent_id]->children_id_list}
+//updates parents' progress
+int8_t task_tree_tlist_task_parents_id_list_remove_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id);
+
+/****************************************** tlist_task_progress.. *******************************************/
+
+//sets the progress of {tlist[task_id]} and calls 'task_tree_tlist_task_update_progress_from_children(tlist, task_id)'
+int8_t task_tree_tlist_task_set_progress(struct tlist_t* tlist, uint32_t task_id, uint8_t progress);
+
+//calculates progress from children and updates the progress of {tlist[task_id]} parents
+int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist, uint32_t task_id);
+
+/****************************************** tlist_task_search... ********************************************/
+
+//returns {id} of task with {tname} and sizeof(task_t->id) if not
+uint32_t task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname);
+
+/***************************************************************************************************/
+/****************************************** tlist_file.. *******************************************/
+/***************************************************************************************************/
+
+//saves tlist data onto the file provided
+//returns 0 on success and -1 on failure
+int8_t task_tree_tlist_file_save(struct tlist_t *tlist, const char *path);
+
+//loads tlist data from the file provided
+//returns 0 on success and -1 on failure
+int8_t task_tree_tlist_file_load(struct tlist_t *tlist, const char *path);
 
 #endif
 
