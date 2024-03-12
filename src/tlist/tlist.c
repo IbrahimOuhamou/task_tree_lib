@@ -336,7 +336,7 @@ int8_t task_tree_tlist_file_load(struct tlist_t *tlist, const char *path)
         task->parents_id_list = (uint32_t*)malloc(task->parents_id_list_size * sizeof(task->id));
         fread(task->parents_id_list, sizeof(task->id), task->parents_id_list_size, fp);
         fread(&task->children_id_list_size, sizeof(task->children_id_list_size), 1, fp);
-        task->parents_id_list = (uint32_t*)malloc(task->children_id_list_size * sizeof(task->id));
+        task->children_id_list = (uint32_t*)malloc(task->children_id_list_size * sizeof(task->id));
         fread(task->children_id_list, sizeof(task->id), task->children_id_list_size, fp);
     }
 
