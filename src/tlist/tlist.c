@@ -102,10 +102,10 @@ int8_t task_tree_tlist_task_free(struct tlist_t* tlist, uint32_t task_id)
     }
     for(uint32_t i = 0; i < task->parents_id_list_size; i++)
     {
-        task_tree_tlist_task_parents_id_list_remove_id(tlist, task_id, task->parents_id_list[i]);
+        uint32_t parent_id = task->parents_id_list[i];
+        task_tree_tlist_task_parents_id_list_remove_id(tlist, task_id, parent_id);
+        task_tree_tlist_task_progress_update_from_children(tlist, parent_id);
     }
-    //incha2Allah will update the parents' progress insread of this misplaced function
-    //task_tree_tlist_task_progress_update_from_children(tlist, task_id);
     task_tree_task_free(task);
     tlist->data[task_id] = NULL;
     return 0;
@@ -179,7 +179,7 @@ int8_t task_tree_tlist_task_parents_id_list_add_id(struct tlist_t* tlist, uint32
     task_tree_task_parents_id_list_add_id(task, parent_id);
     task_tree_task_children_id_list_add_id(parent, task_id);
     
-    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
+    task_tree_tlist_task_progress_update_from_children(tlist, parent_id);
     return 0;
 }
 
@@ -200,7 +200,7 @@ int8_t task_tree_tlist_task_parents_id_list_remove_id(struct tlist_t* tlist, uin
     task_tree_task_parents_id_list_remove_id(task, parent_id);
     task_tree_task_children_id_list_remove_id(parent, task_id);
 
-    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
+    task_tree_tlist_task_progress_update_from_children(tlist, parent_id);
     return 0;
 }
 
@@ -216,9 +216,14 @@ int8_t task_tree_tlist_task_set_progress(struct tlist_t* tlist, uint32_t task_id
     
     struct task_t* task = tlist->data[task_id];
     if(NULL == task) {return -1;}
+    if(0 != task->children_id_list_size) {return -1;}
 
     task->progress = progress;
-    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
+    //update parents' progress
+    for(uint32_t i =0; i < task->parents_id_list_size; i++)
+    {
+        task_tree_tlist_task_progress_update_from_children(tlist, task->parents_id_list[i]);
+    }
     return 0;
 }
 
@@ -228,7 +233,7 @@ int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist,
     if(NULL == tlist) {return -1;}
     //make sure it is in range
     if(task_id >= tlist->size) {return -1;}
-    struct task_t* task = tlist->data[task_id];
+    struct task_t *task = tlist->data[task_id];
     if(NULL == task) {return -1;}
     if(0 == task->children_id_list_size) {return -1;}
 
