@@ -84,8 +84,8 @@ int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist,
 
 /****************************************** tlist_task_search... ********************************************/
 
-//returns {id} of task with {tname} and sizeof(task_t->id) if not
-uint32_t task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname);
+//returns {&task} of task with {tname} and NULL if not
+struct task_t *task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname);
 
 /***************************************************************************************************/
 /****************************************** tlist_file.. *******************************************/

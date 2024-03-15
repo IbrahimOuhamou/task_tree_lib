@@ -104,7 +104,8 @@ int8_t task_tree_tlist_task_free(struct tlist_t* tlist, uint32_t task_id)
     {
         task_tree_tlist_task_parents_id_list_remove_id(tlist, task_id, task->parents_id_list[i]);
     }
-    task_tree_tlist_task_progress_update_from_children(tlist, task_id);
+    //incha2Allah will update the parents' progress insread of this misplaced function
+    //task_tree_tlist_task_progress_update_from_children(tlist, task_id);
     task_tree_task_free(task);
     tlist->data[task_id] = NULL;
     return 0;
@@ -229,7 +230,6 @@ int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist,
     if(task_id >= tlist->size) {return -1;}
     struct task_t* task = tlist->data[task_id];
     if(NULL == task) {return -1;}
-
     if(0 == task->children_id_list_size) {return -1;}
 
     uint16_t progress_sum = 0;
@@ -249,8 +249,8 @@ int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist,
 
 /****************************************** tlist_task_search... ********************************************/
 
-//returns {id} of task with {tname} and sizeof(task_t->id) if not
-uint32_t task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname)
+//returns {&task} of task with {tname} and NULL if not
+struct task_t *task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname)
 {
     if(NULL == tlist || NULL == tname || '\0' == tname[0]) return sizeof(tlist->data[0]->id);
 
@@ -258,11 +258,11 @@ uint32_t task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname)
     {
         if(0 == strcmp(tlist->data[i]->name, tname))
         {
-            return i;
+            return tlist->data[i];
         }
     }
 
-    return sizeof(tlist->data[0]->id);
+    return NULL;
 }
 
 /***************************************************************************************************/
@@ -275,7 +275,7 @@ uint32_t task_tree_tlist_search_name(struct tlist_t *tlist, const char *tname)
 //============ .
 //============ .
 //============ .
-//============ tlist->data[tlist->size].id - tlist->data[tlist->size].name - tlist->data[tlist->size].progress
+//============ tlist->data[tlist->size - 1].id - tlist->data[tlist->size - 1].name - tlist->data[tlist->size - 1].progress
 
 //saves tlist data onto the file provided
 //returns 0 on success and -1 on failure
