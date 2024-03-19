@@ -168,23 +168,6 @@ int8_t task_tree_tlist_task_parents_id_list_add_id(struct tlist_t* tlist, uint32
 {
     //incha2Allah to limit functions we will pass it to the children_id_list
     return task_tree_tlist_task_children_id_list_add_id(tlist, parent_id, task_id);
-    /*
-    if(NULL == tlist) {return -1;}
-    if(task_id == parent_id) {return -1;}
-    //make sure it is in range
-    if(parent_id >= tlist->size || task_id >= tlist->size) {return -1;}
-
-    //for easy use
-    struct task_t* task = tlist->data[task_id];
-    struct task_t* parent = tlist->data[parent_id];
-    if(NULL == task || NULL == parent) {return -1;}
-
-    task_tree_task_parents_id_list_add_id(task, parent_id);
-    task_tree_task_children_id_list_add_id(parent, task_id);
-    
-    task_tree_tlist_task_progress_update_from_children(tlist, parent_id);
-    return 0;
-    */
 }
 
 //removes {parent_id} from {tlist[task_id]->parents_id_list}
@@ -194,22 +177,6 @@ int8_t task_tree_tlist_task_parents_id_list_remove_id(struct tlist_t* tlist, uin
 {
     //incha2Allah to limit functions we will pass it to the children_id_list
     return task_tree_tlist_task_children_id_list_remove_id(tlist, parent_id, task_id);
-    /*
-    if(NULL == tlist) {return -1;}
-    //make sure it is in range
-    if(parent_id >= tlist->size || task_id >= tlist->size) {return -1;}
-
-    //for easy use
-    struct task_t* task = tlist->data[task_id];
-    struct task_t* parent = tlist->data[parent_id];
-    if(NULL == task || NULL == parent) {return -1;}
-
-    task_tree_task_parents_id_list_remove_id(task, parent_id);
-    task_tree_task_children_id_list_remove_id(parent, task_id);
-
-    task_tree_tlist_task_progress_update_from_children(tlist, parent_id);
-    return 0;
-    */
 }
 
 /****************************************** tlist_task_progress.. *******************************************/
