@@ -166,6 +166,9 @@ int8_t task_tree_tlist_task_children_id_list_remove_id(struct tlist_t *tlist, ui
 //return 0 on success and a negative value on failure
 int8_t task_tree_tlist_task_parents_id_list_add_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
 {
+    //incha2Allah to limit functions we will pass it to the children_id_list
+    return task_tree_tlist_task_children_id_list_add_id(tlist, parent_id, task_id);
+    /*
     if(NULL == tlist) {return -1;}
     if(task_id == parent_id) {return -1;}
     //make sure it is in range
@@ -181,6 +184,7 @@ int8_t task_tree_tlist_task_parents_id_list_add_id(struct tlist_t* tlist, uint32
     
     task_tree_tlist_task_progress_update_from_children(tlist, parent_id);
     return 0;
+    */
 }
 
 //removes {parent_id} from {tlist[task_id]->parents_id_list}
@@ -188,6 +192,9 @@ int8_t task_tree_tlist_task_parents_id_list_add_id(struct tlist_t* tlist, uint32
 //updates parents' progress
 int8_t task_tree_tlist_task_parents_id_list_remove_id(struct tlist_t* tlist, uint32_t task_id, uint32_t parent_id)
 {
+    //incha2Allah to limit functions we will pass it to the children_id_list
+    return task_tree_tlist_task_children_id_list_remove_id(tlist, parent_id, task_id);
+    /*
     if(NULL == tlist) {return -1;}
     //make sure it is in range
     if(parent_id >= tlist->size || task_id >= tlist->size) {return -1;}
@@ -202,6 +209,7 @@ int8_t task_tree_tlist_task_parents_id_list_remove_id(struct tlist_t* tlist, uin
 
     task_tree_tlist_task_progress_update_from_children(tlist, parent_id);
     return 0;
+    */
 }
 
 /****************************************** tlist_task_progress.. *******************************************/
@@ -249,6 +257,12 @@ int8_t task_tree_tlist_task_progress_update_from_children(struct tlist_t* tlist,
     {
         task->progress = 100;
     }
+
+    for(uint32_t i =0; i < task->parents_id_list_size; i++)
+    {
+        task_tree_tlist_task_progress_update_from_children(tlist, task->parents_id_list[i]);
+    }
+
     return 0;
 }
 
