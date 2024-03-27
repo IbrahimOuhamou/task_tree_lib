@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "../../include/tlist.h"
+#include "../include/tlist.h"
 
 //check for NULL pointers
 
